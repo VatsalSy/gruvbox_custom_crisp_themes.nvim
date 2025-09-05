@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Override capability for highlight groups
 
 ### Features
+
 - Maximum contrast with pure black background and pure white foreground
 - VSCode theme parity for consistent cross-editor experience
 - Language-specific optimizations for Python and LaTeX
