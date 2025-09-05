@@ -13,9 +13,10 @@ function M.get(p, o)
     NormalNC     = { fg = p.fg0, bg = transparent and p.none or p.bg0 },
     NormalFloat  = { fg = p.fg0, bg = transparent and p.none or p.bg0 },
     FloatBorder  = { fg = p.border_neutral, bg = transparent and p.none or p.bg0 },
-    SignColumn   = { fg = p.fg1, bg = transparent and p.none or p.bg1 },
+    -- VSCode JSON keeps gutter equal to editor background
+    SignColumn   = { fg = p.fg1, bg = transparent and p.none or p.bg0 },
     ColorColumn  = { bg = p.bg1 },
-    CursorLine   = { bg = p.bg2 },
+    CursorLine   = { bg = p.linehl },
     Cursor       = { fg = p.bg0, bg = p.cursor, bold = true },
     CursorLineNr = { fg = p.line_nr_active, bold = true },
     LineNr       = { fg = p.line_nr },
@@ -38,7 +39,8 @@ function M.get(p, o)
     IncSearch    = { fg = p.bg0, bg = p.operator, bold = true },
     CurSearch    = { link = "IncSearch" },
     Visual       = { bg = p.selection },
-    MatchParen   = { fg = p.decorator, bold = true },
+    -- VSCode uses a subtle background for matched brackets
+    MatchParen   = { bg = "#665c54" },
 
     -- Syntax (vim)
     Comment      = { fg = p.comment, italic = bool(o.italics.comments) },
@@ -50,21 +52,21 @@ function M.get(p, o)
     Identifier   = { fg = p.variable, italic = bool(o.italics.variables) },
     Function     = { fg = p.func, bold = bool(o.bold.functions), italic = bool(o.italics.functions) },
     Statement    = { fg = p.keyword },
-    Conditional  = { fg = p.keyword, italic = bool(o.italics.keywords) },
-    Repeat       = { fg = p.keyword },
+    Conditional  = { fg = p.kw_ctrl, italic = bool(o.italics.keywords) },
+    Repeat       = { fg = p.kw_ctrl },
     Label        = { fg = p.keyword },
     Operator     = { fg = p.operator },
     Keyword      = { fg = p.keyword, italic = bool(o.italics.keywords) },
     Exception    = { fg = p.keyword },
-    PreProc      = { fg = p.decorator },
-    Include      = { fg = p.decorator },
-    Define       = { fg = p.decorator },
-    Macro        = { fg = p.decorator },
-    PreCondit    = { fg = p.decorator },
+    PreProc      = { fg = p.preproc },
+    Include      = { fg = p.preproc },
+    Define       = { fg = p.preproc },
+    Macro        = { fg = p.preproc },
+    PreCondit    = { fg = p.kw_ctrl },
     Type         = { fg = p.type },
-    StorageClass = { fg = p.type },
-    Structure    = { fg = p.type },
-    Typedef      = { fg = p.type },
+    StorageClass = { fg = p.kw_ctrl },
+    Structure    = { fg = p.kw_ctrl },
+    Typedef      = { fg = p.kw_ctrl },
     Special      = { fg = p.link },
     SpecialChar  = { fg = p.link },
     Tag          = { fg = p.operator },
@@ -113,14 +115,26 @@ function M.get(p, o)
     ["@comment"]        = { link = "Comment" },
     ["@string"]         = { link = "String" },
     ["@number"]         = { link = "Number" },
+    ["@constant.numeric"] = { link = "Number" },
     ["@boolean"]        = { link = "Boolean" },
-    ["@constant"]       = { fg = p.number },
+    ["@constant"]       = { fg = p.const },
+    ["@constant.builtin"] = { fg = p.const },
+    ["@constant.macro"]   = { fg = p.const },
     ["@variable"]       = { fg = p.variable },
-    ["@variable.parameter"] = { fg = p.variable },
-    ["@field"]          = { fg = p.variable },
-    ["@function"]       = { link = "Function" },
-    ["@method"]         = { link = "Function" },
+    ["@variable.parameter"] = { fg = p.property },
+    ["@field"]          = { fg = p.property },
+    ["@property"]       = { fg = p.property },
+    ["@function"]       = { fg = p.func },  -- Use pink for functions
+    ["@function.call"]  = { fg = p.func_green },  -- Function calls in green
+    ["@method"]         = { fg = p.func },
+    ["@method.call"]    = { fg = p.func_green },
     ["@keyword"]        = { link = "Keyword" },
+    ["@keyword.conditional"] = { fg = p.kw_ctrl },
+    ["@keyword.repeat"]      = { fg = p.kw_ctrl },
+    ["@keyword.return"]      = { fg = p.kw_ctrl },
+    ["@keyword.exception"]   = { fg = p.kw_ctrl },
+    ["@keyword.import"]      = { fg = p.kw_ctrl },  -- Python import/from keywords
+    ["@keyword.directive"]   = { fg = p.preproc },
     ["@operator"]       = { link = "Operator" },
     ["@punctuation"]    = { fg = p.punct },
     ["@punctuation.bracket"] = { fg = p.punct },
@@ -131,6 +145,46 @@ function M.get(p, o)
     ["@namespace"]      = { fg = p.number }, -- bright purple
     ["@typeParameter"]  = { link = "Type" },
     ["@attribute"]      = { fg = p.decorator },
+    
+    -- Python-specific highlights
+    ["@decorator.python"]          = { fg = p.decorator },
+    ["@variable.language.self.python"] = { fg = p.const, italic = true },
+    ["@variable.language.cls.python"]  = { fg = p.const, italic = true },
+    ["@function.builtin.python"]   = { fg = p.preproc },
+    ["@function.magic.python"]     = { fg = p.type },
+    ["@string.documentation.python"] = { fg = p.comment, italic = bool(o.italics.comments) },
+    ["@type.annotation.python"]    = { fg = p.type },
+    ["@keyword.storage.python"]    = { fg = p.kw_ctrl },  -- class, def, async
+    ["@parameter.python"]          = { fg = p.property },
+    
+    -- LaTeX-specific highlights (modern Treesitter queries)
+    ["@function.latex"]            = { fg = p.func_green },  -- LaTeX commands like \section
+    ["@function.macro.latex"]      = { fg = p.func_green },  -- LaTeX macros
+    ["@function.builtin.latex"]    = { fg = p.func_green },  -- Built-in LaTeX commands
+    ["@keyword.latex"]             = { fg = p.kw_ctrl },  -- LaTeX keywords
+    ["@keyword.control.latex"]     = { fg = p.kw_ctrl },  -- \begin, \end
+    ["@keyword.import.latex"]      = { fg = p.func_green },  -- \usepackage, \documentclass should be green
+    ["@text.math.latex"]           = { fg = p.latex_math },  -- Math mode
+    ["@text.environment.latex"]    = { fg = p.type },  -- Environment names
+    ["@text.environment.name.latex"] = { fg = p.type },  -- Environment names in \begin{}
+    ["@parameter.latex"]           = { fg = p.const },  -- Parameters in brackets
+    ["@variable.parameter.latex"]  = { fg = p.const },  -- Command parameters
+    ["@punctuation.special.latex"] = { fg = p.kw_ctrl },  -- Special LaTeX punctuation
+    ["@punctuation.bracket.latex"] = { fg = p.punct },  -- Brackets in LaTeX
+    ["@comment.latex"]             = { fg = p.latex_comment, italic = bool(o.italics.comments) },
+    ["@comment.line.percentage.latex"] = { fg = p.latex_comment, italic = bool(o.italics.comments) },
+    ["@string.latex"]              = { fg = p.string },  -- String content in LaTeX
+    
+    -- Additional LaTeX support (older/alternative queries)
+    ["@text.literal.latex"]        = { fg = p.string },
+    ["@text.reference.latex"]      = { fg = p.const },  -- \ref, \cite
+    ["@text.title.latex"]          = { fg = p.latex_math, bold = true },  -- Section titles
+    ["@markup.math.latex"]         = { fg = p.latex_math },  -- Math content
+    ["@markup.raw.latex"]          = { fg = p.string },  -- Verbatim/raw text
+    ["@module.latex"]              = { fg = p.type },  -- Package names
+    ["@namespace.latex"]           = { fg = p.type },  -- Namespaces
+    ["@support.function.latex"]    = { fg = p.func_green },  -- LaTeX functions per VSCode spec
+    ["@entity.name.latex"]         = { fg = p.entity_name },  -- Entity names per VSCode spec
 
     -- Treesitter: Markdown/markup
     ["@markup.heading"]        = { fg = p.keyword, bold = true },
@@ -172,8 +226,39 @@ function M.get(p, o)
     markdownRule                = { fg = p.border_focus },
     markdownBlockquote          = { fg = p.comment },
 
+    -- Legacy LaTeX syntax highlighting (non-Treesitter)
+    texCmd             = { fg = p.func_green },  -- LaTeX commands
+    texCmdName         = { fg = p.func_green },
+    texFunction        = { fg = p.func_green },
+    texStatement       = { fg = p.kw_ctrl },  -- \begin, \end, etc
+    texBeginEnd        = { fg = p.kw_ctrl },
+    texBeginEndName    = { fg = p.type },  -- Environment names
+    texDocType         = { fg = p.func_green },  -- \documentclass should be green
+    texDocTypeArgs     = { fg = p.type },
+    texInputFile       = { fg = p.func_green },  -- \usepackage, \input should be green
+    texSection         = { fg = p.func_green },  -- Section commands
+    texSectionName     = { fg = p.latex_math, bold = true },
+    texTitle           = { fg = p.latex_math, bold = true },
+    texMathZone        = { fg = p.latex_math },  -- Math zones
+    texMathOper        = { fg = p.latex_math },
+    texMathDelim       = { fg = p.operator },
+    texGreek           = { fg = p.latex_math },
+    texComment         = { fg = p.latex_comment, italic = bool(o.italics.comments) },
+    texString          = { fg = p.string },
+    texRefZone         = { fg = p.const },  -- References
+    texCite            = { fg = p.const },  -- Citations
+    texNewCmd          = { fg = p.func_green },  -- \newcommand
+    texCmdArgs         = { fg = p.property },  -- Command arguments
+    texOpt             = { fg = p.property },  -- Optional arguments
+    
     -- UI links
     Underlined         = { fg = p.link, underline = true },
+    
+    -- Additional semantic highlights for better VSCode parity
+    ["@class"]          = { fg = p.type },  -- Class names should be cyan
+    ["@interface"]      = { fg = p.type },
+    ["@enum"]           = { fg = p.keyword },  -- Enums as yellow
+    ["@enumMember"]     = { fg = p.const },  -- Enum members as mauve
   }
 
   for k, v in pairs(o.overrides or {}) do

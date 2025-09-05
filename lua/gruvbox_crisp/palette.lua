@@ -18,16 +18,27 @@ M.dark = {
   comment  = "#6272a4",
   string   = "#50fa7b",
   keyword  = "#f1fa8c",
-  func     = "#ff79c6",
+  func     = "#ff79c6",  -- pink for functions
+  func_green = "#b8bb26", -- green for LaTeX commands and entity names
   number   = "#bd93f9",
-  type     = "#8be9fd",
+  type     = "#8be9fd",  -- cyan for types/classes
   operator = "#ffb86c",
   variable = "#f8f8f2",
   decorator= "#9b4fa0",
+  const     = "#d3869b", -- non-numeric constants / enum members
+  preproc   = "#fe8019", -- preprocessor/meta
+  kw_ctrl   = "#fb4934", -- control keywords (if/for/return, storage)
+  property  = "#83a598", -- fields/properties/parameters
+  
+  -- Language-specific colors
+  latex_math = "#fabd2f", -- LaTeX math mode (yellow/gold)
+  latex_comment = "#7c6f64", -- LaTeX comments (gruvbox gray)
+  entity_name = "#b8bb26", -- Entity names (green)
 
   -- UI accents
   cursor      = "#9b4fa0",
   selection   = "#231b2e", -- approx #bd93f930 on black
+  linehl      = "#1a1a1a", -- approx #3c383660 over pure black
   border_focus= "#bd93f9",
   hover_bg    = "#1a1a1a",
   link        = "#bd93f9",
