@@ -66,6 +66,10 @@ function M.load()
       vim.api.nvim_set_hl(0, name, spec)
     end
   end
+
+  -- Ensure whitespace and special keys are visible but subdued
+  vim.api.nvim_set_hl(0, "Whitespace", { fg = p.border_neutral })
+  vim.api.nvim_set_hl(0, "NonText", { fg = p.border_neutral })
 end
 
 return M

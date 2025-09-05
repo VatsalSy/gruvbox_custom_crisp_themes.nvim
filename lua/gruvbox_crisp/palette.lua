@@ -9,6 +9,10 @@ M.dark = {
   bg3 = "#262626",   -- subtle separators
   fg0 = "#ffffff",   -- editor foreground (pure white)
   fg1 = "#f8f8f2",   -- near-white for variables and UI text
+  ui_fg = "#fbf1c7", -- general UI foreground per JSON
+
+  -- Neutral borders from JSON
+  border_neutral = "#3c3836",
 
   -- Core syntax (Dracula-inspired)
   comment  = "#6272a4",
@@ -29,12 +33,13 @@ M.dark = {
   link        = "#bd93f9",
   link_active = "#d6acff",
   line_nr_active = "#ffb86c",
+  line_nr      = "#665c54",
 
   -- VCS / Diff
   red      = "#ff5555",
   green    = "#50fa7b",
   warn     = "#ffb86c",
-  info     = "#6cb6ff",
+  info     = "#83a598",
   hint     = "#8be9fd",
   ok       = "#50fa7b",
   diff_add_bg    = "#0f2f17",
