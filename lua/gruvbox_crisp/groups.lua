@@ -21,26 +21,30 @@ function M.get(p, o)
     or (cl_lvl == "normal" and p.linehl)
     or p.linehl_subtle
 
+  local contrast = (o.contrast or "highest"):lower()
+  local base_bg = (contrast == "soft" and p.bg1 or p.bg0)
+  if transparent then base_bg = p.none end
+
   local groups = {
     -- Core/editor
-    Normal       = { fg = p.fg0, bg = transparent and p.none or p.bg0 },
-    NormalNC     = { fg = p.fg0, bg = transparent and p.none or p.bg0 },
-    NormalFloat  = { fg = p.fg0, bg = transparent and p.none or p.bg0 },
-    FloatBorder  = { fg = p.border_neutral, bg = transparent and p.none or p.bg0 },
+    Normal       = { fg = p.fg0, bg = base_bg },
+    NormalNC     = { fg = p.fg0, bg = base_bg },
+    NormalFloat  = { fg = p.fg0, bg = base_bg },
+    FloatBorder  = { fg = p.border_neutral, bg = base_bg },
     -- VSCode JSON keeps gutter equal to editor background
-    SignColumn   = { fg = p.fg1, bg = transparent and p.none or p.bg0 },
+    SignColumn   = { fg = p.fg1, bg = base_bg },
     ColorColumn  = { bg = p.bg1 },
     CursorLine   = { bg = cursorline_bg },
-    Cursor       = { fg = p.bg0, bg = p.cursor, bold = true },
+    Cursor       = { fg = base_bg, bg = p.cursor, bold = true },
     CursorLineNr = { fg = p.line_nr_active, bold = true },
     LineNr       = { fg = p.line_nr },
-    WinSeparator = { fg = p.border_neutral, bg = transparent and p.none or p.bg0 },
+    WinSeparator = { fg = p.border_neutral, bg = base_bg },
     VertSplit    = { link = "WinSeparator" },
-    StatusLine   = { fg = p.ui_fg, bg = p.bg0 },
-    StatusLineNC = { fg = p.gray, bg = p.bg0 },
-    TabLine      = { fg = p.gray, bg = p.bg0 },
-    TabLineSel   = { fg = p.ui_fg, bg = p.bg0, bold = true },
-    TabLineFill  = { fg = p.gray, bg = p.bg0 },
+    StatusLine   = { fg = p.ui_fg, bg = base_bg },
+    StatusLineNC = { fg = p.gray, bg = base_bg },
+    TabLine      = { fg = p.gray, bg = base_bg },
+    TabLineSel   = { fg = p.ui_fg, bg = base_bg, bold = true },
+    TabLineFill  = { fg = p.gray, bg = base_bg },
 
     -- Menus / popups
     Pmenu        = { fg = p.fg0, bg = p.bg1 },

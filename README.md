@@ -5,6 +5,7 @@ A high-contrast Neovim colorscheme based on the VSCode "Gruvbox Crisp Anysphere 
 ## ✨ Features
 
 - **Maximum Contrast**: Pure black (#000000) background with pure white (#ffffff) foreground
+- **Soft Variant**: Optional #0a0a0a background for reduced eye strain
 - **VSCode Parity**: Exact color matching with VSCode Gruvbox Crisp theme
 - **Language Support**: 
   - Python: Decorators, self/cls, magic methods, type hints
@@ -96,6 +97,7 @@ require("gruvbox_crisp").setup({
   style = "dark",       -- "dark" (default) or "light"; invalid falls back to "dark"
   transparent = false,  -- Transparent background
   terminal_colors = true, -- Set terminal colors
+  contrast = "highest",  -- "highest" | "soft"
   -- Visual intensity controls
   selection_intensity = "high",   -- "low" | "medium" | "high"
   cursorline_intensity = "subtle", -- "subtle" | "normal" | "strong"
