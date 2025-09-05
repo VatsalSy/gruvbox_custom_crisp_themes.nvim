@@ -1,0 +1,72 @@
+local M = {}
+
+-- Highest Contrast, pop variant
+M.dark = {
+  -- Base
+  bg0 = "#000000",   -- editor background (pure black)
+  bg1 = "#0a0a0a",   -- sidebar/activity bar
+  bg2 = "#1a1a1a",   -- hover/list backgrounds
+  bg3 = "#262626",   -- subtle separators
+  fg0 = "#ffffff",   -- editor foreground (pure white)
+  fg1 = "#f8f8f2",   -- near-white for variables and UI text
+
+  -- Core syntax (Dracula-inspired)
+  comment  = "#6272a4",
+  string   = "#50fa7b",
+  keyword  = "#f1fa8c",
+  func     = "#ff79c6",
+  number   = "#bd93f9",
+  type     = "#8be9fd",
+  operator = "#ffb86c",
+  variable = "#f8f8f2",
+  decorator= "#9b4fa0",
+
+  -- UI accents
+  cursor      = "#9b4fa0",
+  selection   = "#231b2e", -- approx #bd93f930 on black
+  border_focus= "#bd93f9",
+  hover_bg    = "#1a1a1a",
+  link        = "#bd93f9",
+  link_active = "#d6acff",
+  line_nr_active = "#ffb86c",
+
+  -- VCS / Diff
+  red      = "#ff5555",
+  green    = "#50fa7b",
+  warn     = "#ffb86c",
+  info     = "#6cb6ff",
+  hint     = "#8be9fd",
+  ok       = "#50fa7b",
+  diff_add_bg    = "#0f2f17",
+  diff_delete_bg = "#301010",
+  diff_text      = "#6cb6ff",
+
+  gray     = "#6272a4",
+  none     = "NONE",
+
+  -- Terminal ANSI
+  term = {
+    black   = "#212121",
+    red     = "#ff5555",
+    green   = "#50fa7b",
+    yellow  = "#f1fa8c",
+    blue    = "#6cb6ff",
+    magenta = "#bd93f9",
+    cyan    = "#8be9fd",
+    white   = "#cccccc",
+
+    bright_black   = "#6272a4",
+    bright_red     = "#ff6e6e",
+    bright_green   = "#69ff94",
+    bright_yellow  = "#ffffa5",
+    bright_blue    = "#79c7ff",
+    bright_magenta = "#d6acff",
+    bright_cyan    = "#a4ffff",
+    bright_white   = "#ffffff",
+  },
+}
+
+-- Light table kept for compatibility; mirrors dark variant.
+M.light = M.dark
+
+return M
