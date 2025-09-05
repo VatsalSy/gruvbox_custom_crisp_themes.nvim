@@ -1,3 +1,4 @@
+-- luacheck: globals vim
 local palette = require("gruvbox_crisp.palette")
 local groups  = require("gruvbox_crisp.groups")
 
@@ -53,21 +54,32 @@ end
 function M.load()
   local o = M.options
   vim.o.termguicolors = true
-  vim.o.background = "dark"
 
-  local p = palette.dark
+  -- Clear existing highlights and reset syntax to avoid stale groups
+  vim.cmd("hi clear")
+  if vim.fn.exists("syntax_on") == 1 then
+    vim.cmd("syntax reset")
+  end
+
+  -- Choose palette based on style option, defaulting to dark for invalid values
+  local style = (o.style or "dark"):lower()
+  if style ~= "light" and style ~= "dark" then
+    style = "dark"
+  end
+  vim.o.background = style
+  vim.g.colors_name = "gruvbox_crisp"
+
+  local p = (style == "light") and palette.light or palette.dark
   local function safe(key, fallback)
     return p[key] or fallback
   end
 
   if o.terminal_colors then set_terminal(p) end
 
-  vim.g.colors_name = "gruvbox_crisp"
-
   local specs = groups.get(p, o)
   for name, spec in pairs(specs) do
     if spec.link then
-      vim.api.nvim_set_hl(0, name, { link = spec.link, default = false })
+      vim.api.nvim_set_hl(0, name, { link = spec.link })
     else
       vim.api.nvim_set_hl(0, name, spec)
     end
