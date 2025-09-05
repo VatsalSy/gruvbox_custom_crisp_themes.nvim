@@ -39,6 +39,19 @@ A high-contrast Neovim colorscheme based on the VSCode "Gruvbox Crisp Anysphere 
 }
 ```
 
+## ⚡ Quick Setup
+
+```lua
+-- In your Neovim config (Lua)
+require('gruvbox_crisp').setup({ style = 'light' })  -- or 'dark' (default)
+vim.cmd.colorscheme('gruvbox_crisp')
+```
+
+```vim
+" Vimscript equivalent
+colorscheme gruvbox_crisp
+```
+
 ### [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
 ```lua
@@ -80,7 +93,7 @@ colorscheme gruvbox_crisp
 
 ```lua
 require("gruvbox_crisp").setup({
-  style = "dark",       -- Currently only dark is implemented
+  style = "dark",       -- "dark" (default) or "light"; invalid falls back to "dark"
   transparent = false,  -- Transparent background
   terminal_colors = true, -- Set terminal colors
   -- Visual intensity controls
