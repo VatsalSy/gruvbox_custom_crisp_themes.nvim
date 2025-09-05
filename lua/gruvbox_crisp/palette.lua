@@ -46,7 +46,8 @@ M.dark = {
   diff_delete_bg = "#301010",
   diff_text      = "#6cb6ff",
 
-  gray     = "#6272a4",
+  gray     = "#6272a4", -- blue-gray (comments)
+  punct    = "#a89984", -- warm gray for punctuation
   none     = "NONE",
 
   -- Terminal ANSI
