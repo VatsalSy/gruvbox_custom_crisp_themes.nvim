@@ -128,6 +128,46 @@ function M.get(p, o)
     ["@typeParameter"]  = { link = "Type" },
     ["@attribute"]      = { fg = p.decorator },
 
+    -- Treesitter: Markdown/markup
+    ["@markup.heading"]        = { fg = p.keyword, bold = true },
+    ["@markup.heading.1"]      = { fg = p.keyword, bold = true },
+    ["@markup.heading.2"]      = { fg = p.keyword, bold = true },
+    ["@markup.heading.3"]      = { fg = p.keyword, bold = true },
+    ["@markup.heading.4"]      = { fg = p.keyword, bold = true },
+    ["@markup.heading.5"]      = { fg = p.keyword, bold = true },
+    ["@markup.heading.6"]      = { fg = p.keyword, bold = true },
+    ["@markup.strong"]         = { fg = p.fg0, bold = true },
+    ["@markup.italic"]         = { fg = p.fg0, italic = true },
+    ["@markup.strikethrough"]  = { strikethrough = true },
+    ["@markup.link"]           = { fg = p.link },
+    ["@markup.link.url"]       = { fg = p.link, underline = true },
+    ["@markup.link.label"]     = { fg = p.link_active },
+    ["@string.special.url"]    = { fg = p.link, underline = true },
+    ["@markup.raw"]            = { fg = p.string }, -- inline code
+    ["@markup.raw.block"]      = { fg = p.string, bg = p.bg1 }, -- code block
+    ["@markup.list"]           = { fg = p.operator },
+    ["@markup.quote"]          = { fg = p.comment },
+    ["@punctuation.special"]   = { fg = p.operator }, -- e.g., list markers
+
+    -- Legacy Vim markdown (fallback when no Treesitter)
+    Title                       = { fg = p.keyword, bold = true },
+    markdownH1                  = { link = "Title" },
+    markdownH2                  = { link = "Title" },
+    markdownH3                  = { link = "Title" },
+    markdownH4                  = { link = "Title" },
+    markdownH5                  = { link = "Title" },
+    markdownH6                  = { link = "Title" },
+    markdownHeadingDelimiter    = { fg = p.decorator },
+    markdownBold                = { bold = true },
+    markdownItalic              = { italic = true },
+    markdownCode                = { fg = p.string },
+    markdownCodeBlock           = { fg = p.string, bg = p.bg1 },
+    markdownUrl                 = { fg = p.link, underline = true },
+    markdownLinkText            = { fg = p.link_active },
+    markdownListMarker          = { fg = p.operator },
+    markdownRule                = { fg = p.border_focus },
+    markdownBlockquote          = { fg = p.comment },
+
     -- UI links
     Underlined         = { fg = p.link, underline = true },
   }
