@@ -56,6 +56,9 @@ function M.load()
   vim.o.background = "dark"
 
   local p = palette.dark
+  local function safe(key, fallback)
+    return p[key] or fallback
+  end
 
   if o.terminal_colors then set_terminal(p) end
 
@@ -71,8 +74,9 @@ function M.load()
   end
 
   -- Ensure whitespace and special keys are visible but subdued
-  vim.api.nvim_set_hl(0, "Whitespace", { fg = p.border_neutral })
-  vim.api.nvim_set_hl(0, "NonText", { fg = p.border_neutral })
+  local fallback_border = p.gray or "#808080"
+  vim.api.nvim_set_hl(0, "Whitespace", { fg = safe("border_neutral", fallback_border) })
+  vim.api.nvim_set_hl(0, "NonText", { fg = safe("border_neutral", fallback_border) })
 end
 
 return M

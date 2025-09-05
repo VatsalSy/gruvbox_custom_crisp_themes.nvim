@@ -157,6 +157,6 @@ MIT © 2025 Vatsal Sanjay
 
 ## 🙏 Acknowledgments
 
-- Based on the VSCode Gruvbox Crisp theme specification
+- Based on the [VSCode Gruvbox Crisp theme specification](https://github.com/VatsalSy/gruvbox_custom_themes)
 - Color palette inspired by Dracula theme
-- Original gruvbox theme by morhetz
+- Original gruvbox theme by [morhetz](https://github.com/morhetz/gruvbox)

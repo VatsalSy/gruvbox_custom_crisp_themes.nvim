@@ -5,6 +5,10 @@ local function bool(b)
 end
 
 function M.get(p, o)
+  -- guard options and nested tables
+  o = o or {}
+  local italics = o.italics or {}
+  local bold = o.bold or {}
   local transparent = o.transparent
   -- choose intensities
   local sel_lvl = (o.selection_intensity or "high"):lower()
@@ -39,7 +43,7 @@ function M.get(p, o)
     TabLineFill  = { fg = p.gray, bg = p.bg0 },
 
     -- Menus / popups
-    Pmenu        = { fg = p.fg0, bg = p.bg0 },
+    Pmenu        = { fg = p.fg0, bg = p.bg1 },
     PmenuSel     = { fg = p.fg0, bg = p.hover_bg, bold = true },
     PmenuSbar    = { bg = p.bg2 },
     PmenuThumb   = { bg = p.bg3 },
@@ -50,23 +54,23 @@ function M.get(p, o)
     CurSearch    = { link = "IncSearch" },
     Visual       = { bg = selection_bg },
     -- VSCode uses a subtle background for matched brackets
-    MatchParen   = { bg = "#665c54" },
+    MatchParen   = { bg = p.bg2 },
 
     -- Syntax (vim)
-    Comment      = { fg = p.comment, italic = bool(o.italics.comments) },
-    String       = { fg = p.string, italic = bool(o.italics.strings) },
+    Comment      = { fg = p.comment, italic = bool(italics.comments) },
+    String       = { fg = p.string, italic = bool(italics.strings) },
     Character    = { link = "String" },
     Number       = { fg = p.number },
     Boolean      = { fg = p.number },
     Float        = { link = "Number" },
-    Identifier   = { fg = p.variable, italic = bool(o.italics.variables) },
-    Function     = { fg = p.func, bold = bool(o.bold.functions), italic = bool(o.italics.functions) },
+    Identifier   = { fg = p.variable, italic = bool(italics.variables) },
+    Function     = { fg = p.func, bold = bool(bold.functions), italic = bool(italics.functions) },
     Statement    = { fg = p.keyword },
-    Conditional  = { fg = p.kw_ctrl, italic = bool(o.italics.keywords) },
+    Conditional  = { fg = p.kw_ctrl, italic = bool(italics.keywords) },
     Repeat       = { fg = p.kw_ctrl },
     Label        = { fg = p.keyword },
     Operator     = { fg = p.operator },
-    Keyword      = { fg = p.keyword, italic = bool(o.italics.keywords) },
+    Keyword      = { fg = p.keyword, italic = bool(italics.keywords) },
     Exception    = { fg = p.keyword },
     PreProc      = { fg = p.preproc },
     Include      = { fg = p.preproc },
@@ -81,7 +85,7 @@ function M.get(p, o)
     SpecialChar  = { fg = p.link },
     Tag          = { fg = p.operator },
     Delimiter    = { fg = p.punct },
-    SpecialComment = { fg = p.comment, italic = bool(o.italics.comments) },
+    SpecialComment = { fg = p.comment, italic = bool(italics.comments) },
     Debug        = { fg = p.red },
     Underlined   = { underline = true },
     Bold         = { bold = true },
@@ -104,9 +108,9 @@ function M.get(p, o)
     GitSignsDelete = { fg = p.red },
 
     -- Diagnostics
-    DiagnosticError = { fg = "#fb4934" },
-    DiagnosticWarn  = { fg = "#d79921" },
-    DiagnosticInfo  = { fg = "#83a598" },
+    DiagnosticError = { fg = p.red },
+    DiagnosticWarn  = { fg = p.warn },
+    DiagnosticInfo  = { fg = p.info },
     DiagnosticHint  = { fg = p.hint },
     DiagnosticOk    = { fg = p.ok },
     DiagnosticUnderlineError = { sp = p.red, undercurl = true },
@@ -119,7 +123,7 @@ function M.get(p, o)
     LspReferenceRead  = { bg = p.hover_bg },
     LspReferenceWrite = { bg = p.hover_bg },
     LspCodeLens       = { fg = p.comment },
-    LspInlayHint      = { fg = p.comment, bg = p.bg0 },
+    LspInlayHint      = { fg = p.comment, bg = p.none },
 
     -- Treesitter/Semantic tokens (common)
     ["@comment"]        = { link = "Comment" },
@@ -153,7 +157,7 @@ function M.get(p, o)
     ["@type"]           = { link = "Type" },
     ["@type.builtin"]   = { link = "Type" },
     ["@namespace"]      = { fg = p.number }, -- bright purple
-    ["@typeParameter"]  = { link = "Type" },
+    ["@type.parameter"]  = { link = "Type" },
     ["@attribute"]      = { fg = p.decorator },
     
     -- Python-specific highlights
@@ -162,7 +166,7 @@ function M.get(p, o)
     ["@variable.language.cls.python"]  = { fg = p.const, italic = true },
     ["@function.builtin.python"]   = { fg = p.preproc },
     ["@function.magic.python"]     = { fg = p.type },
-    ["@string.documentation.python"] = { fg = p.comment, italic = bool(o.italics.comments) },
+    ["@string.documentation.python"] = { fg = p.comment, italic = bool(italics.comments) },
     ["@type.annotation.python"]    = { fg = p.type },
     ["@keyword.storage.python"]    = { fg = p.kw_ctrl },  -- class, def, async
     ["@parameter.python"]          = { fg = p.property },
@@ -181,8 +185,8 @@ function M.get(p, o)
     ["@variable.parameter.latex"]  = { fg = p.const },  -- Command parameters
     ["@punctuation.special.latex"] = { fg = p.kw_ctrl },  -- Special LaTeX punctuation
     ["@punctuation.bracket.latex"] = { fg = p.punct },  -- Brackets in LaTeX
-    ["@comment.latex"]             = { fg = p.latex_comment, italic = bool(o.italics.comments) },
-    ["@comment.line.percentage.latex"] = { fg = p.latex_comment, italic = bool(o.italics.comments) },
+    ["@comment.latex"]             = { fg = p.latex_comment, italic = bool(italics.comments) },
+    ["@comment.line.percentage.latex"] = { fg = p.latex_comment, italic = bool(italics.comments) },
     ["@string.latex"]              = { fg = p.string },  -- String content in LaTeX
     
     -- Additional LaTeX support (older/alternative queries)
@@ -215,7 +219,6 @@ function M.get(p, o)
     ["@markup.raw.block"]      = { fg = p.string, bg = p.bg1 }, -- code block
     ["@markup.list"]           = { fg = p.operator },
     ["@markup.quote"]          = { fg = p.comment },
-    ["@punctuation.special"]   = { fg = p.operator }, -- e.g., list markers
 
     -- Legacy Vim markdown (fallback when no Treesitter)
     Title                       = { fg = p.keyword, bold = true },
@@ -253,7 +256,7 @@ function M.get(p, o)
     texMathOper        = { fg = p.latex_math },
     texMathDelim       = { fg = p.operator },
     texGreek           = { fg = p.latex_math },
-    texComment         = { fg = p.latex_comment, italic = bool(o.italics.comments) },
+    texComment         = { fg = p.latex_comment, italic = bool(italics.comments) },
     texString          = { fg = p.string },
     texRefZone         = { fg = p.const },  -- References
     texCite            = { fg = p.const },  -- Citations
@@ -261,9 +264,8 @@ function M.get(p, o)
     texCmdArgs         = { fg = p.property },  -- Command arguments
     texOpt             = { fg = p.property },  -- Optional arguments
     
-    -- UI links
-    Underlined         = { fg = p.link, underline = true },
-    
+    -- UI links (avoid duplicate Underlined; defined earlier)
+
     -- Additional semantic highlights for better VSCode parity
     ["@class"]          = { fg = p.type },  -- Class names should be cyan
     ["@interface"]      = { fg = p.type },
