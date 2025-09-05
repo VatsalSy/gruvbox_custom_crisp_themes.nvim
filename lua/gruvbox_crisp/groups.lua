@@ -10,6 +10,8 @@ function M.get(p, o)
   local italics = o.italics or {}
   local bold = o.bold or {}
   local transparent = o.transparent
+  local contrast = (o.contrast or "highest"):lower()
+  local base_bg = (contrast == "soft") and p.bg1 or p.bg0
   -- choose intensities
   local sel_lvl = (o.selection_intensity or "high"):lower()
   local selection_bg = (sel_lvl == "low" and p.selection)
@@ -23,24 +25,24 @@ function M.get(p, o)
 
   local groups = {
     -- Core/editor
-    Normal       = { fg = p.fg0, bg = transparent and p.none or p.bg0 },
-    NormalNC     = { fg = p.fg0, bg = transparent and p.none or p.bg0 },
-    NormalFloat  = { fg = p.fg0, bg = transparent and p.none or p.bg0 },
-    FloatBorder  = { fg = p.border_neutral, bg = transparent and p.none or p.bg0 },
+    Normal       = { fg = p.fg0, bg = transparent and p.none or base_bg },
+    NormalNC     = { fg = p.fg0, bg = transparent and p.none or base_bg },
+    NormalFloat  = { fg = p.fg0, bg = transparent and p.none or base_bg },
+    FloatBorder  = { fg = p.border_neutral, bg = transparent and p.none or base_bg },
     -- VSCode JSON keeps gutter equal to editor background
-    SignColumn   = { fg = p.fg1, bg = transparent and p.none or p.bg0 },
+    SignColumn   = { fg = p.fg1, bg = transparent and p.none or base_bg },
     ColorColumn  = { bg = p.bg1 },
     CursorLine   = { bg = cursorline_bg },
     Cursor       = { fg = p.bg0, bg = p.cursor, bold = true },
     CursorLineNr = { fg = p.line_nr_active, bold = true },
     LineNr       = { fg = p.line_nr },
-    WinSeparator = { fg = p.border_neutral, bg = transparent and p.none or p.bg0 },
+    WinSeparator = { fg = p.border_neutral, bg = transparent and p.none or base_bg },
     VertSplit    = { link = "WinSeparator" },
-    StatusLine   = { fg = p.ui_fg, bg = p.bg0 },
-    StatusLineNC = { fg = p.gray, bg = p.bg0 },
-    TabLine      = { fg = p.gray, bg = p.bg0 },
-    TabLineSel   = { fg = p.ui_fg, bg = p.bg0, bold = true },
-    TabLineFill  = { fg = p.gray, bg = p.bg0 },
+    StatusLine   = { fg = p.ui_fg, bg = base_bg },
+    StatusLineNC = { fg = p.gray, bg = base_bg },
+    TabLine      = { fg = p.gray, bg = base_bg },
+    TabLineSel   = { fg = p.ui_fg, bg = base_bg, bold = true },
+    TabLineFill  = { fg = p.gray, bg = base_bg },
 
     -- Menus / popups
     Pmenu        = { fg = p.fg0, bg = p.bg1 },
@@ -159,7 +161,7 @@ function M.get(p, o)
     ["@namespace"]      = { fg = p.number }, -- bright purple
     ["@type.parameter"]  = { link = "Type" },
     ["@attribute"]      = { fg = p.decorator },
-    
+
     -- Python-specific highlights
     ["@decorator.python"]          = { fg = p.decorator },
     ["@variable.language.self.python"] = { fg = p.const, italic = true },
@@ -170,7 +172,7 @@ function M.get(p, o)
     ["@type.annotation.python"]    = { fg = p.type },
     ["@keyword.storage.python"]    = { fg = p.kw_ctrl },  -- class, def, async
     ["@parameter.python"]          = { fg = p.property },
-    
+
     -- LaTeX-specific highlights (modern Treesitter queries)
     ["@function.latex"]            = { fg = p.func_green },  -- LaTeX commands like \section
     ["@function.macro.latex"]      = { fg = p.func_green },  -- LaTeX macros
@@ -188,7 +190,7 @@ function M.get(p, o)
     ["@comment.latex"]             = { fg = p.latex_comment, italic = bool(italics.comments) },
     ["@comment.line.percentage.latex"] = { fg = p.latex_comment, italic = bool(italics.comments) },
     ["@string.latex"]              = { fg = p.string },  -- String content in LaTeX
-    
+
     -- Additional LaTeX support (older/alternative queries)
     ["@text.literal.latex"]        = { fg = p.string },
     ["@text.reference.latex"]      = { fg = p.const },  -- \ref, \cite
@@ -263,7 +265,7 @@ function M.get(p, o)
     texNewCmd          = { fg = p.func_green },  -- \newcommand
     texCmdArgs         = { fg = p.property },  -- Command arguments
     texOpt             = { fg = p.property },  -- Optional arguments
-    
+
     -- UI links (avoid duplicate Underlined; defined earlier)
 
     -- Additional semantic highlights for better VSCode parity

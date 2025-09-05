@@ -5,8 +5,9 @@ A high-contrast Neovim colorscheme based on the VSCode "Gruvbox Crisp Anysphere 
 ## ✨ Features
 
 - **Maximum Contrast**: Pure black (#000000) background with pure white (#ffffff) foreground
+- **Soft Contrast Option**: Slightly raised `#0a0a0a` background while retaining crisp foreground colors
 - **VSCode Parity**: Exact color matching with VSCode Gruvbox Crisp theme
-- **Language Support**: 
+- **Language Support**:
   - Python: Decorators, self/cls, magic methods, type hints
   - LaTeX: Commands, environments, math mode, citations
   - Full Treesitter support with fallback to legacy syntax
@@ -43,7 +44,7 @@ A high-contrast Neovim colorscheme based on the VSCode "Gruvbox Crisp Anysphere 
 
 ```lua
 -- In your Neovim config (Lua)
-require('gruvbox_crisp').setup({ style = 'light' })  -- or 'dark' (default)
+require('gruvbox_crisp').setup({ style = 'light', contrast = 'soft' })  -- use contrast='highest' for pure black
 vim.cmd.colorscheme('gruvbox_crisp')
 ```
 
@@ -96,6 +97,7 @@ require("gruvbox_crisp").setup({
   style = "dark",       -- "dark" (default) or "light"; invalid falls back to "dark"
   transparent = false,  -- Transparent background
   terminal_colors = true, -- Set terminal colors
+  contrast = "highest",   -- "highest" (default) or "soft"
   -- Visual intensity controls
   selection_intensity = "high",   -- "low" | "medium" | "high"
   cursorline_intensity = "subtle", -- "subtle" | "normal" | "strong"

@@ -29,7 +29,7 @@ M.dark = {
   preproc   = "#fe8019", -- preprocessor/meta
   kw_ctrl   = "#fb4934", -- control keywords (if/for/return, storage)
   property  = "#83a598", -- fields/properties/parameters
-  
+
   -- Language-specific colors
   latex_math = "#fabd2f", -- LaTeX math mode (yellow/gold)
   latex_comment = "#7c6f64", -- LaTeX comments (gruvbox gray)

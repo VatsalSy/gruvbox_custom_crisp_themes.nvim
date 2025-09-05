@@ -8,6 +8,7 @@ local defaults = {
   style = "dark",
   transparent = false,
   terminal_colors = true,
+  contrast = "highest", -- "highest" | "soft"
   -- Visual intensity controls
   selection_intensity = "high",    -- "low" | "medium" | "high"
   cursorline_intensity = "subtle",  -- "subtle" | "normal" | "strong"
