@@ -15,7 +15,7 @@ function M.get(p, o)
     FloatBorder  = { fg = p.border_neutral, bg = transparent and p.none or p.bg0 },
     SignColumn   = { fg = p.fg1, bg = transparent and p.none or p.bg1 },
     ColorColumn  = { bg = p.bg1 },
-    CursorLine   = { bg = p.bg1 },
+    CursorLine   = { bg = p.bg2 },
     Cursor       = { fg = p.bg0, bg = p.cursor, bold = true },
     CursorLineNr = { fg = p.line_nr_active, bold = true },
     LineNr       = { fg = p.line_nr },
