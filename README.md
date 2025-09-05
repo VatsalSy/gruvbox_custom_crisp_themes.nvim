@@ -83,6 +83,9 @@ require("gruvbox_crisp").setup({
   style = "dark",       -- Currently only dark is implemented
   transparent = false,  -- Transparent background
   terminal_colors = true, -- Set terminal colors
+  -- Visual intensity controls
+  selection_intensity = "high",   -- "low" | "medium" | "high"
+  cursorline_intensity = "subtle", -- "subtle" | "normal" | "strong"
   italics = {
     comments = true,
     strings = false,

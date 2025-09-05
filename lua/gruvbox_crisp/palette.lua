@@ -37,8 +37,14 @@ M.dark = {
 
   -- UI accents
   cursor      = "#9b4fa0",
-  selection   = "#231b2e", -- approx #bd93f930 on black
-  linehl      = "#1a1a1a", -- approx #3c383660 over pure black
+  -- Selection approximations of #bd93f9 over black with varying alpha
+  selection        = "#231b2e", -- low  (~18% alpha)
+  selection_med    = "#302440", -- mid  (~24% alpha)
+  selection_high   = "#392c4b", -- high (~30% alpha)
+  -- Cursor line highlight (neutral gray overlay equivalents)
+  linehl_subtle = "#0a0a0a",
+  linehl        = "#0e0e0e",
+  linehl_strong = "#161313",
   border_focus= "#bd93f9",
   hover_bg    = "#1a1a1a",
   link        = "#bd93f9",

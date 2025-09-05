@@ -6,6 +6,16 @@ end
 
 function M.get(p, o)
   local transparent = o.transparent
+  -- choose intensities
+  local sel_lvl = (o.selection_intensity or "high"):lower()
+  local selection_bg = (sel_lvl == "low" and p.selection)
+    or (sel_lvl == "medium" and p.selection_med)
+    or p.selection_high
+
+  local cl_lvl = (o.cursorline_intensity or "subtle"):lower()
+  local cursorline_bg = (cl_lvl == "strong" and p.linehl_strong)
+    or (cl_lvl == "normal" and p.linehl)
+    or p.linehl_subtle
 
   local groups = {
     -- Core/editor
@@ -16,7 +26,7 @@ function M.get(p, o)
     -- VSCode JSON keeps gutter equal to editor background
     SignColumn   = { fg = p.fg1, bg = transparent and p.none or p.bg0 },
     ColorColumn  = { bg = p.bg1 },
-    CursorLine   = { bg = p.linehl },
+    CursorLine   = { bg = cursorline_bg },
     Cursor       = { fg = p.bg0, bg = p.cursor, bold = true },
     CursorLineNr = { fg = p.line_nr_active, bold = true },
     LineNr       = { fg = p.line_nr },
@@ -38,7 +48,7 @@ function M.get(p, o)
     Search       = { fg = p.bg0, bg = p.keyword, bold = true },
     IncSearch    = { fg = p.bg0, bg = p.operator, bold = true },
     CurSearch    = { link = "IncSearch" },
-    Visual       = { bg = p.selection },
+    Visual       = { bg = selection_bg },
     -- VSCode uses a subtle background for matched brackets
     MatchParen   = { bg = "#665c54" },
 
