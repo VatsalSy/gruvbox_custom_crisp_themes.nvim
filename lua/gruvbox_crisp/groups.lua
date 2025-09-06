@@ -21,32 +21,63 @@ function M.get(p, o)
     or (cl_lvl == "normal" and p.linehl)
     or p.linehl_subtle
 
+  -- Validate and normalize contrast; default to "highest"
+  local allowed_contrast = { soft = true, medium = true, hard = true, highest = true }
+  local contrast = o.contrast
+  if type(contrast) == "string" then
+    contrast = contrast:lower()
+  else
+    contrast = "highest"
+  end
+  if not allowed_contrast[contrast] then
+    contrast = "highest"
+  end
+
+  -- Base background derived from validated contrast, with transparent override
+  local base_bg = (contrast == "soft") and p.bg1 or p.bg0
+  if transparent then base_bg = p.none end
+
+  -- Prepare surface layers for downstream use
+  -- In soft contrast, lift secondary surfaces so they remain distinct
+  local surface0, surface1, surface2, surface3
+  if contrast == "soft" then
+    surface0 = p.bg1
+    surface1 = p.bg2
+    surface2 = p.bg3
+    surface3 = p.bg3
+  else
+    surface0 = p.bg1
+    surface1 = p.bg2
+    surface2 = p.bg3
+    surface3 = p.bg3
+  end
+
   local groups = {
     -- Core/editor
-    Normal       = { fg = p.fg0, bg = transparent and p.none or p.bg0 },
-    NormalNC     = { fg = p.fg0, bg = transparent and p.none or p.bg0 },
-    NormalFloat  = { fg = p.fg0, bg = transparent and p.none or p.bg0 },
-    FloatBorder  = { fg = p.border_neutral, bg = transparent and p.none or p.bg0 },
+    Normal       = { fg = p.fg0, bg = base_bg },
+    NormalNC     = { fg = p.fg0, bg = base_bg },
+    NormalFloat  = { fg = p.fg0, bg = base_bg },
+    FloatBorder  = { fg = p.border_neutral, bg = base_bg },
     -- VSCode JSON keeps gutter equal to editor background
-    SignColumn   = { fg = p.fg1, bg = transparent and p.none or p.bg0 },
-    ColorColumn  = { bg = p.bg1 },
+    SignColumn   = { fg = p.fg1, bg = base_bg },
+    ColorColumn  = { bg = surface2 },
     CursorLine   = { bg = cursorline_bg },
-    Cursor       = { fg = p.bg0, bg = p.cursor, bold = true },
+    Cursor       = { fg = base_bg, bg = p.cursor, bold = true },
     CursorLineNr = { fg = p.line_nr_active, bold = true },
     LineNr       = { fg = p.line_nr },
-    WinSeparator = { fg = p.border_neutral, bg = transparent and p.none or p.bg0 },
+    WinSeparator = { fg = p.border_neutral, bg = base_bg },
     VertSplit    = { link = "WinSeparator" },
-    StatusLine   = { fg = p.ui_fg, bg = p.bg0 },
-    StatusLineNC = { fg = p.gray, bg = p.bg0 },
-    TabLine      = { fg = p.gray, bg = p.bg0 },
-    TabLineSel   = { fg = p.ui_fg, bg = p.bg0, bold = true },
-    TabLineFill  = { fg = p.gray, bg = p.bg0 },
+    StatusLine   = { fg = p.ui_fg, bg = base_bg },
+    StatusLineNC = { fg = p.gray, bg = base_bg },
+    TabLine      = { fg = p.gray, bg = base_bg },
+    TabLineSel   = { fg = p.ui_fg, bg = base_bg, bold = true },
+    TabLineFill  = { fg = p.gray, bg = base_bg },
 
     -- Menus / popups
-    Pmenu        = { fg = p.fg0, bg = p.bg1 },
+    Pmenu        = { fg = p.fg0, bg = surface2 },
     PmenuSel     = { fg = p.fg0, bg = p.hover_bg, bold = true },
-    PmenuSbar    = { bg = p.bg2 },
-    PmenuThumb   = { bg = p.bg3 },
+    PmenuSbar    = { bg = surface3 },
+    PmenuThumb   = { bg = surface3 },
 
     -- Search / selection
     Search       = { fg = p.bg0, bg = p.keyword, bold = true },
@@ -216,7 +247,7 @@ function M.get(p, o)
     ["@markup.link.label"]     = { fg = p.link_active },
     ["@string.special.url"]    = { fg = p.link, underline = true },
     ["@markup.raw"]            = { fg = p.string }, -- inline code
-    ["@markup.raw.block"]      = { fg = p.string, bg = p.bg1 }, -- code block
+    ["@markup.raw.block"]      = { fg = p.string, bg = surface2 }, -- code block
     ["@markup.list"]           = { fg = p.operator },
     ["@markup.quote"]          = { fg = p.comment },
 
@@ -232,7 +263,7 @@ function M.get(p, o)
     markdownBold                = { bold = true },
     markdownItalic              = { italic = true },
     markdownCode                = { fg = p.string },
-    markdownCodeBlock           = { fg = p.string, bg = p.bg1 },
+    markdownCodeBlock           = { fg = p.string, bg = surface2 },
     markdownUrl                 = { fg = p.link, underline = true },
     markdownLinkText            = { fg = p.link_active },
     markdownListMarker          = { fg = p.operator },

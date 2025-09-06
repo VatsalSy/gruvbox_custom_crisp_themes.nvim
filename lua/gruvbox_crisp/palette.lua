@@ -4,7 +4,7 @@ local M = {}
 M.dark = {
   -- Base
   bg0 = "#000000",   -- editor background (pure black)
-  bg1 = "#0a0a0a",   -- sidebar/activity bar
+  bg1 = "#1d1d1d",   -- soft contrast background
   bg2 = "#1a1a1a",   -- hover/list backgrounds
   bg3 = "#262626",   -- subtle separators
   fg0 = "#ffffff",   -- editor foreground (pure white)

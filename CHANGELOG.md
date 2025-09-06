@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-09-05
 
 ### Added
+
 - Initial release with VSCode Gruvbox Crisp (Highest Contrast, pop) specification
 - Pure black (#000000) background for maximum contrast
 - Vibrant Dracula-inspired color palette
@@ -27,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Customizable italics and bold options
 - Terminal color configuration
 - Override capability for highlight groups
+- Soft contrast option switching base editor background to `p.bg1`
 
 ### Features
 
