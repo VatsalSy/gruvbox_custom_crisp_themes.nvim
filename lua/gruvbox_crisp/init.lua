@@ -32,7 +32,7 @@ local function set_terminal(p)
   vim.g.terminal_color_0  = t.black   or p.bg0
   vim.g.terminal_color_1  = t.red     or p.red
   vim.g.terminal_color_2  = t.green   or p.green
-  vim.g.terminal_color_3  = t.yellow  or p.warn
+  vim.g.terminal_color_3  = t.yellow  or p.yellow or p.warn
   vim.g.terminal_color_4  = t.blue    or p.info
   vim.g.terminal_color_5  = t.magenta or p.number
   vim.g.terminal_color_6  = t.cyan    or p.hint
@@ -40,7 +40,7 @@ local function set_terminal(p)
   vim.g.terminal_color_8  = t.bright_black   or p.gray
   vim.g.terminal_color_9  = t.bright_red     or p.red
   vim.g.terminal_color_10 = t.bright_green   or p.green
-  vim.g.terminal_color_11 = t.bright_yellow  or p.warn
+  vim.g.terminal_color_11 = t.bright_yellow  or p.bright_yellow or p.yellow or p.warn
   vim.g.terminal_color_12 = t.bright_blue    or p.info
   vim.g.terminal_color_13 = t.bright_magenta or p.number
   vim.g.terminal_color_14 = t.bright_cyan    or p.hint

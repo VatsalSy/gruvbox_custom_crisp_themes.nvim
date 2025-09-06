@@ -190,18 +190,18 @@ function M.get(p, o)
     ["@namespace"]      = { fg = p.number }, -- bright purple
     ["@type.parameter"]  = { link = "Type" },
     ["@attribute"]      = { fg = p.decorator },
-    
+
     -- Python-specific highlights
     ["@decorator.python"]          = { fg = p.decorator },
-    ["@variable.language.self.python"] = { fg = p.const, italic = true },
-    ["@variable.language.cls.python"]  = { fg = p.const, italic = true },
+    ["@variable.language.self.python"] = { link = "@variable.parameter" },
+    ["@variable.language.cls.python"]  = { link = "@variable.parameter" },
     ["@function.builtin.python"]   = { fg = p.preproc },
     ["@function.magic.python"]     = { fg = p.type },
     ["@string.documentation.python"] = { fg = p.comment, italic = bool(italics.comments) },
     ["@type.annotation.python"]    = { fg = p.type },
-    ["@keyword.storage.python"]    = { fg = p.kw_ctrl },  -- class, def, async
+    ["@keyword.storage.python"]    = { link = "@keyword" },  -- class, def, async
     ["@parameter.python"]          = { fg = p.property },
-    
+
     -- LaTeX-specific highlights (modern Treesitter queries)
     ["@function.latex"]            = { fg = p.func_green },  -- LaTeX commands like \section
     ["@function.macro.latex"]      = { fg = p.func_green },  -- LaTeX macros
@@ -219,17 +219,17 @@ function M.get(p, o)
     ["@comment.latex"]             = { fg = p.latex_comment, italic = bool(italics.comments) },
     ["@comment.line.percentage.latex"] = { fg = p.latex_comment, italic = bool(italics.comments) },
     ["@string.latex"]              = { fg = p.string },  -- String content in LaTeX
-    
+
     -- Additional LaTeX support (older/alternative queries)
     ["@text.literal.latex"]        = { fg = p.string },
     ["@text.reference.latex"]      = { fg = p.const },  -- \ref, \cite
     ["@text.title.latex"]          = { fg = p.latex_math, bold = true },  -- Section titles
     ["@markup.math.latex"]         = { fg = p.latex_math },  -- Math content
     ["@markup.raw.latex"]          = { fg = p.string },  -- Verbatim/raw text
-    ["@module.latex"]              = { fg = p.type },  -- Package names
+    ["@module.latex"]              = { link = "@namespace.latex" },  -- Package names
     ["@namespace.latex"]           = { fg = p.type },  -- Namespaces
-    ["@support.function.latex"]    = { fg = p.func_green },  -- LaTeX functions per VSCode spec
-    ["@entity.name.latex"]         = { fg = p.entity_name },  -- Entity names per VSCode spec
+    ["@support.function.latex"]    = { link = "@function.latex" },  -- Map to function
+    ["@entity.name.latex"]         = { link = "@text.environment.name.latex" },
 
     -- Treesitter: Markdown/markup
     ["@markup.heading"]        = { fg = p.keyword, bold = true },
@@ -247,7 +247,7 @@ function M.get(p, o)
     ["@markup.link.label"]     = { fg = p.link_active },
     ["@string.special.url"]    = { fg = p.link, underline = true },
     ["@markup.raw"]            = { fg = p.string }, -- inline code
-    ["@markup.raw.block"]      = { fg = p.string, bg = surface2 }, -- code block
+    ["@markup.raw.block"]      = transparent and { fg = p.string } or { fg = p.string, bg = surface2 }, -- code block
     ["@markup.list"]           = { fg = p.operator },
     ["@markup.quote"]          = { fg = p.comment },
 
@@ -263,7 +263,7 @@ function M.get(p, o)
     markdownBold                = { bold = true },
     markdownItalic              = { italic = true },
     markdownCode                = { fg = p.string },
-    markdownCodeBlock           = { fg = p.string, bg = surface2 },
+    markdownCodeBlock           = transparent and { fg = p.string } or { fg = p.string, bg = surface2 },
     markdownUrl                 = { fg = p.link, underline = true },
     markdownLinkText            = { fg = p.link_active },
     markdownListMarker          = { fg = p.operator },
@@ -294,7 +294,7 @@ function M.get(p, o)
     texNewCmd          = { fg = p.func_green },  -- \newcommand
     texCmdArgs         = { fg = p.property },  -- Command arguments
     texOpt             = { fg = p.property },  -- Optional arguments
-    
+
     -- UI links (avoid duplicate Underlined; defined earlier)
 
     -- Additional semantic highlights for better VSCode parity

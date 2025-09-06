@@ -1,5 +1,20 @@
 local M = {}
 
+-- simple deepcopy fallback if vim.deepcopy is unavailable
+local function deepcopy_tbl(t)
+  if _G.vim and vim.deepcopy then return vim.deepcopy(t) end
+  if type(t) ~= "table" then return t end
+  local copy = {}
+  for k, v in pairs(t) do
+    if type(v) == "table" then
+      copy[k] = deepcopy_tbl(v)
+    else
+      copy[k] = v
+    end
+  end
+  return copy
+end
+
 -- Highest Contrast, pop variant
 M.dark = {
   -- Base
@@ -29,7 +44,7 @@ M.dark = {
   preproc   = "#fe8019", -- preprocessor/meta
   kw_ctrl   = "#fb4934", -- control keywords (if/for/return, storage)
   property  = "#83a598", -- fields/properties/parameters
-  
+
   -- Language-specific colors
   latex_math = "#fabd2f", -- LaTeX math mode (yellow/gold)
   latex_comment = "#7c6f64", -- LaTeX comments (gruvbox gray)
@@ -90,6 +105,7 @@ M.dark = {
 }
 
 -- Light table kept for compatibility; mirrors dark variant.
-M.light = M.dark
+-- Create an independent copy so future adjustments to light can diverge
+M.light = deepcopy_tbl(M.dark)
 
 return M
