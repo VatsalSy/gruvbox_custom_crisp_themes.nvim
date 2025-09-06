@@ -21,8 +21,9 @@ function M.get(p, o)
     or (cl_lvl == "normal" and p.linehl)
     or p.linehl_subtle
 
-  -- Validate and normalize contrast; default to "highest"
-  local allowed_contrast = { soft = true, medium = true, hard = true, highest = true }
+  -- Validate and normalize contrast; keep set consistent with README
+  -- Supported: "soft" and "highest" (others coerce to "highest")
+  local allowed_contrast = { soft = true, highest = true }
   local contrast = o.contrast
   if type(contrast) == "string" then
     contrast = contrast:lower()
@@ -38,17 +39,15 @@ function M.get(p, o)
   if transparent then base_bg = p.none end
 
   -- Prepare surface layers for downstream use
-  -- In soft contrast, lift secondary surfaces so they remain distinct
-  local surface0, surface1, surface2, surface3
+  -- Surfaces float above the base background; adjust slightly for "soft".
+  local surface1, surface2, surface3
   if contrast == "soft" then
-    surface0 = p.bg1
     surface1 = p.bg2
     surface2 = p.bg3
     surface3 = p.bg3
   else
-    surface0 = p.bg1
-    surface1 = p.bg2
-    surface2 = p.bg3
+    surface1 = p.bg1
+    surface2 = p.bg2
     surface3 = p.bg3
   end
 
@@ -60,7 +59,7 @@ function M.get(p, o)
     FloatBorder  = { fg = p.border_neutral, bg = base_bg },
     -- VSCode JSON keeps gutter equal to editor background
     SignColumn   = { fg = p.fg1, bg = base_bg },
-    ColorColumn  = { bg = surface2 },
+    ColorColumn  = { bg = surface1 },
     CursorLine   = { bg = cursorline_bg },
     Cursor       = { fg = base_bg, bg = p.cursor, bold = true },
     CursorLineNr = { fg = p.line_nr_active, bold = true },
@@ -221,15 +220,23 @@ function M.get(p, o)
     ["@string.latex"]              = { fg = p.string },  -- String content in LaTeX
 
     -- Additional LaTeX support (older/alternative queries)
+    -- NOTE: Some capture names below (e.g., module/support/entity) are
+    -- nonstandard or editor-specific. We keep them (harmless if absent) and
+    -- also provide LSP semantic-token fallbacks for texlab-enabled setups.
     ["@text.literal.latex"]        = { fg = p.string },
     ["@text.reference.latex"]      = { fg = p.const },  -- \ref, \cite
     ["@text.title.latex"]          = { fg = p.latex_math, bold = true },  -- Section titles
     ["@markup.math.latex"]         = { fg = p.latex_math },  -- Math content
     ["@markup.raw.latex"]          = { fg = p.string },  -- Verbatim/raw text
-    ["@module.latex"]              = { link = "@namespace.latex" },  -- Package names
+    ["@module.latex"]              = { fg = p.type },  -- Package names
     ["@namespace.latex"]           = { fg = p.type },  -- Namespaces
-    ["@support.function.latex"]    = { link = "@function.latex" },  -- Map to function
-    ["@entity.name.latex"]         = { link = "@text.environment.name.latex" },
+    ["@support.function.latex"]    = { fg = p.func_green },  -- Support functions
+    ["@entity.name.latex"]         = { fg = p.entity_name },
+
+    -- LSP semantic-token fallbacks (texlab)
+    ["@lsp.type.module.latex"]     = { fg = p.type },
+    ["@lsp.type.namespace.latex"]  = { fg = p.type },
+    ["@lsp.type.function.latex"]   = { fg = p.func_green },
 
     -- Treesitter: Markdown/markup
     ["@markup.heading"]        = { fg = p.keyword, bold = true },

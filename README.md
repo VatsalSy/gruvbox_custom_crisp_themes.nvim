@@ -44,9 +44,12 @@ A high-contrast Neovim colorscheme based on the VSCode "Gruvbox Crisp Anysphere 
 
 ```lua
 -- In your Neovim config (Lua)
-require('gruvbox_crisp').setup({ style = 'light' })  -- or 'dark' (default)
+require('gruvbox_crisp').setup({ style = 'dark' })  -- 'light' currently mirrors 'dark'
 vim.cmd.colorscheme('gruvbox_crisp')
 ```
+
+Note: The `style = 'light'` option currently aliases the dark palette. A true
+light palette is planned; until then, `light` renders identically to `dark`.
 
 ```vim
 " Vimscript equivalent
@@ -94,7 +97,7 @@ colorscheme gruvbox_crisp
 
 ```lua
 require("gruvbox_crisp").setup({
-  style = "dark",       -- "dark" (default) or "light"; invalid falls back to "dark"
+  style = "dark",       -- "dark" (default). "light" currently mirrors "dark"; invalid falls back to "dark"
   transparent = false,  -- Transparent background
   terminal_colors = true, -- Set terminal colors
   contrast = "highest",  -- "highest" | "soft"
@@ -162,9 +165,14 @@ See the `examples/` directory for syntax highlighting demonstrations in:
 
 ## 🚀 Requirements
 
-- Neovim 0.8.0 or higher
+- Neovim 0.10.0 or higher
 - `termguicolors` enabled
 - Optional: Treesitter for enhanced syntax highlighting
+
+Note: This theme defines the `LspInlayHint` highlight group, which was
+introduced in Neovim 0.10.0. If you are on 0.9.x or older, please upgrade to
+0.10.0+ or remove any inlay-hint-related configuration from your setup to avoid
+warnings.
 
 ## 📄 License
 
