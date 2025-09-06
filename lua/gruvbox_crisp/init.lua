@@ -1,6 +1,6 @@
 -- luacheck: globals vim
 local palette = require("gruvbox_crisp.palette")
-local groups  = require("gruvbox_crisp.groups")
+local groups = require("gruvbox_crisp.groups")
 
 local M = {}
 
@@ -10,8 +10,8 @@ local defaults = {
   terminal_colors = true,
   contrast = "highest",
   -- Visual intensity controls
-  selection_intensity = "high",    -- "low" | "medium" | "high"
-  cursorline_intensity = "subtle",  -- "subtle" | "normal" | "strong"
+  selection_intensity = "high", -- "low" | "medium" | "high"
+  cursorline_intensity = "subtle", -- "subtle" | "normal" | "strong"
   italics = {
     comments = true,
     strings = false,
@@ -29,22 +29,22 @@ M.options = vim.deepcopy(defaults)
 
 local function set_terminal(p)
   local t = p.term or {}
-  vim.g.terminal_color_0  = t.black   or p.bg0
-  vim.g.terminal_color_1  = t.red     or p.red
-  vim.g.terminal_color_2  = t.green   or p.green
-  vim.g.terminal_color_3  = t.yellow  or p.yellow or p.warn
-  vim.g.terminal_color_4  = t.blue    or p.info
-  vim.g.terminal_color_5  = t.magenta or p.number
-  vim.g.terminal_color_6  = t.cyan    or p.hint
-  vim.g.terminal_color_7  = t.white   or p.fg1
-  vim.g.terminal_color_8  = t.bright_black   or p.gray
-  vim.g.terminal_color_9  = t.bright_red     or p.red
-  vim.g.terminal_color_10 = t.bright_green   or p.green
-  vim.g.terminal_color_11 = t.bright_yellow  or p.bright_yellow or p.yellow or p.warn
-  vim.g.terminal_color_12 = t.bright_blue    or p.info
+  vim.g.terminal_color_0 = t.black or p.bg0
+  vim.g.terminal_color_1 = t.red or p.red
+  vim.g.terminal_color_2 = t.green or p.green
+  vim.g.terminal_color_3 = t.yellow or p.yellow or p.warn
+  vim.g.terminal_color_4 = t.blue or p.info
+  vim.g.terminal_color_5 = t.magenta or p.number
+  vim.g.terminal_color_6 = t.cyan or p.hint
+  vim.g.terminal_color_7 = t.white or p.fg1
+  vim.g.terminal_color_8 = t.bright_black or p.gray
+  vim.g.terminal_color_9 = t.bright_red or p.red
+  vim.g.terminal_color_10 = t.bright_green or p.green
+  vim.g.terminal_color_11 = t.bright_yellow or p.bright_yellow or p.yellow or p.warn
+  vim.g.terminal_color_12 = t.bright_blue or p.info
   vim.g.terminal_color_13 = t.bright_magenta or p.number
-  vim.g.terminal_color_14 = t.bright_cyan    or p.hint
-  vim.g.terminal_color_15 = t.bright_white   or p.fg0
+  vim.g.terminal_color_14 = t.bright_cyan or p.hint
+  vim.g.terminal_color_15 = t.bright_white or p.fg0
 end
 
 function M.setup(opts)
@@ -75,7 +75,9 @@ function M.load()
     return p[key] or fallback
   end
 
-  if o.terminal_colors then set_terminal(p) end
+  if o.terminal_colors then
+    set_terminal(p)
+  end
 
   local specs = groups.get(p, o)
   for name, spec in pairs(specs) do
