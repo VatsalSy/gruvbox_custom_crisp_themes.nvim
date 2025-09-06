@@ -21,9 +21,36 @@ function M.get(p, o)
     or (cl_lvl == "normal" and p.linehl)
     or p.linehl_subtle
 
-  local contrast = (o.contrast or "highest"):lower()
-  local base_bg = (contrast == "soft" and p.bg1 or p.bg0)
+  -- Validate and normalize contrast; default to "highest"
+  local allowed_contrast = { soft = true, medium = true, hard = true, highest = true }
+  local contrast = o.contrast
+  if type(contrast) == "string" then
+    contrast = contrast:lower()
+  else
+    contrast = "highest"
+  end
+  if not allowed_contrast[contrast] then
+    contrast = "highest"
+  end
+
+  -- Base background derived from validated contrast, with transparent override
+  local base_bg = (contrast == "soft") and p.bg1 or p.bg0
   if transparent then base_bg = p.none end
+
+  -- Prepare surface layers for downstream use
+  -- In soft contrast, lift secondary surfaces so they remain distinct
+  local surface0, surface1, surface2, surface3
+  if contrast == "soft" then
+    surface0 = p.bg1
+    surface1 = p.bg2
+    surface2 = p.bg3
+    surface3 = p.bg3
+  else
+    surface0 = p.bg1
+    surface1 = p.bg2
+    surface2 = p.bg3
+    surface3 = p.bg3
+  end
 
   local groups = {
     -- Core/editor
@@ -33,7 +60,7 @@ function M.get(p, o)
     FloatBorder  = { fg = p.border_neutral, bg = base_bg },
     -- VSCode JSON keeps gutter equal to editor background
     SignColumn   = { fg = p.fg1, bg = base_bg },
-    ColorColumn  = { bg = p.bg1 },
+    ColorColumn  = { bg = surface2 },
     CursorLine   = { bg = cursorline_bg },
     Cursor       = { fg = base_bg, bg = p.cursor, bold = true },
     CursorLineNr = { fg = p.line_nr_active, bold = true },
@@ -47,10 +74,10 @@ function M.get(p, o)
     TabLineFill  = { fg = p.gray, bg = base_bg },
 
     -- Menus / popups
-    Pmenu        = { fg = p.fg0, bg = p.bg1 },
+    Pmenu        = { fg = p.fg0, bg = surface2 },
     PmenuSel     = { fg = p.fg0, bg = p.hover_bg, bold = true },
-    PmenuSbar    = { bg = p.bg2 },
-    PmenuThumb   = { bg = p.bg3 },
+    PmenuSbar    = { bg = surface3 },
+    PmenuThumb   = { bg = surface3 },
 
     -- Search / selection
     Search       = { fg = p.bg0, bg = p.keyword, bold = true },
@@ -220,7 +247,7 @@ function M.get(p, o)
     ["@markup.link.label"]     = { fg = p.link_active },
     ["@string.special.url"]    = { fg = p.link, underline = true },
     ["@markup.raw"]            = { fg = p.string }, -- inline code
-    ["@markup.raw.block"]      = { fg = p.string, bg = p.bg1 }, -- code block
+    ["@markup.raw.block"]      = { fg = p.string, bg = surface2 }, -- code block
     ["@markup.list"]           = { fg = p.operator },
     ["@markup.quote"]          = { fg = p.comment },
 
@@ -236,7 +263,7 @@ function M.get(p, o)
     markdownBold                = { bold = true },
     markdownItalic              = { italic = true },
     markdownCode                = { fg = p.string },
-    markdownCodeBlock           = { fg = p.string, bg = p.bg1 },
+    markdownCodeBlock           = { fg = p.string, bg = surface2 },
     markdownUrl                 = { fg = p.link, underline = true },
     markdownLinkText            = { fg = p.link_active },
     markdownListMarker          = { fg = p.operator },

@@ -5,7 +5,7 @@ A high-contrast Neovim colorscheme based on the VSCode "Gruvbox Crisp Anysphere 
 ## ✨ Features
 
 - **Maximum Contrast**: Pure black (#000000) background with pure white (#ffffff) foreground
-- **Soft Variant**: Optional #0a0a0a background for reduced eye strain
+- **Soft Variant**: Enable soft contrast via `contrast = "soft"` to use the theme's `bg1` background for reduced eye strain
 - **VSCode Parity**: Exact color matching with VSCode Gruvbox Crisp theme
 - **Language Support**: 
   - Python: Decorators, self/cls, magic methods, type hints

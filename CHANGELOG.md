@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Soft contrast option switching base editor background to `p.bg1`
 
 ## [1.0.0] - 2025-09-05
