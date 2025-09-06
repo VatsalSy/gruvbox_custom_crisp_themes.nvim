@@ -75,6 +75,7 @@ Plug 'VatsalSy/gruvbox_custom_crisp_themes.nvim'
 ```
 
 Then in your config:
+
 ```vim
 colorscheme gruvbox_crisp
 ```
