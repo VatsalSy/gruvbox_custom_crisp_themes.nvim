@@ -2,8 +2,8 @@ local M = {}
 
 -- simple deepcopy fallback if vim.deepcopy is unavailable
 local function deepcopy_tbl(t)
-  if _G.vim and vim.deepcopy then
-    return vim.deepcopy(t)
+  if _G.vim and _G.vim.deepcopy then
+    return _G.vim.deepcopy(t)
   end
   if type(t) ~= "table" then
     return t
@@ -48,6 +48,8 @@ M.dark = {
   preproc = "#fe8019", -- preprocessor/meta
   kw_ctrl = "#fb4934", -- control keywords (if/for/return, storage)
   property = "#83a598", -- fields/properties/parameters
+  magic = "#8ec07c", -- Python magic/dunder methods
+  magic_method = "#8ec07c", -- legacy alias
 
   -- Language-specific colors
   latex_math = "#fabd2f", -- LaTeX math mode (yellow/gold)
@@ -88,7 +90,7 @@ M.dark = {
 
   -- Terminal ANSI
   term = {
-    black = "#212121",
+    black = "#000000",
     red = "#ff5555",
     green = "#50fa7b",
     yellow = "#f1fa8c",
@@ -111,5 +113,24 @@ M.dark = {
 -- Light table kept for compatibility; mirrors dark variant.
 -- Create an independent copy so future adjustments to light can diverge
 M.light = deepcopy_tbl(M.dark)
+
+-- make palettes readonly (shallow) to avoid accidental mutation
+local function readonly(tbl)
+  return setmetatable({}, {
+    __index = tbl,
+    __newindex = function()
+      error("palette tables are readonly", 2)
+    end,
+    __pairs = function()
+      return pairs(tbl)
+    end,
+    __ipairs = function()
+      return ipairs(tbl)
+    end,
+  })
+end
+
+M.dark = readonly(M.dark)
+M.light = readonly(M.light)
 
 return M

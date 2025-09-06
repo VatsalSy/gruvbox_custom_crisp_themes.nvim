@@ -67,7 +67,8 @@ function M.get(p, o)
     SignColumn = { fg = p.fg1, bg = base_bg },
     ColorColumn = { bg = surface1 },
     CursorLine = { bg = cursorline_bg },
-    Cursor = { fg = base_bg, bg = p.cursor, bold = true },
+    -- Use solid cursor background to work on transparent setups
+    Cursor = { bg = p.cursor, bold = true },
     CursorLineNr = { fg = p.line_nr_active, bold = true },
     LineNr = { fg = p.line_nr },
     WinSeparator = { fg = p.border_neutral, bg = base_bg },
@@ -149,6 +150,19 @@ function M.get(p, o)
     DiagnosticInfo = { fg = p.info },
     DiagnosticHint = { fg = p.hint },
     DiagnosticOk = { fg = p.ok },
+    -- Signs (signcolumn)
+    DiagnosticSignError = { link = "DiagnosticError" },
+    DiagnosticSignWarn = { link = "DiagnosticWarn" },
+    DiagnosticSignInfo = { link = "DiagnosticInfo" },
+    DiagnosticSignHint = { link = "DiagnosticHint" },
+    DiagnosticSignOk = { link = "DiagnosticOk" },
+    -- Virtual text
+    DiagnosticVirtualTextError = transparent and { fg = p.red } or { fg = p.red, bg = surface1 },
+    DiagnosticVirtualTextWarn = transparent and { fg = p.warn } or { fg = p.warn, bg = surface1 },
+    DiagnosticVirtualTextInfo = transparent and { fg = p.info } or { fg = p.info, bg = surface1 },
+    DiagnosticVirtualTextHint = transparent and { fg = p.hint } or { fg = p.hint, bg = surface1 },
+    DiagnosticVirtualTextOk = transparent and { fg = p.ok } or { fg = p.ok, bg = surface1 },
+    -- Undercurls
     DiagnosticUnderlineError = { sp = p.red, undercurl = true },
     DiagnosticUnderlineWarn = { sp = p.warn, undercurl = true },
     DiagnosticUnderlineInfo = { sp = p.info, undercurl = true },
@@ -168,7 +182,7 @@ function M.get(p, o)
     ["@constant.numeric"] = { link = "Number" },
     ["@boolean"] = { link = "Boolean" },
     ["@constant"] = { fg = p.const },
-    ["@constant.builtin"] = { fg = p.const },
+    ["@constant.builtin"] = { fg = p.preproc },
     ["@constant.macro"] = { fg = p.const },
     ["@variable"] = { fg = p.variable },
     ["@variable.parameter"] = { fg = p.property },
@@ -201,7 +215,7 @@ function M.get(p, o)
     ["@variable.language.self.python"] = { link = "@variable.parameter" },
     ["@variable.language.cls.python"] = { link = "@variable.parameter" },
     ["@function.builtin.python"] = { fg = p.preproc },
-    ["@function.magic.python"] = { fg = p.type },
+    ["@function.magic.python"] = { fg = p.magic },
     ["@string.documentation.python"] = { fg = p.comment, italic = bool(italics.comments) },
     ["@type.annotation.python"] = { fg = p.type },
     ["@keyword.storage.python"] = { link = "@keyword" }, -- class, def, async
@@ -308,13 +322,15 @@ function M.get(p, o)
     texCmdArgs = { fg = p.property }, -- Command arguments
     texOpt = { fg = p.property }, -- Optional arguments
 
-    -- UI links (avoid duplicate Underlined; defined earlier)
-
-    -- Additional semantic highlights for better VSCode parity
     ["@class"] = { fg = p.type }, -- Class names should be cyan
     ["@interface"] = { fg = p.type },
     ["@enum"] = { fg = p.keyword }, -- Enums as yellow
     ["@enumMember"] = { fg = p.const }, -- Enum members as mauve
+    -- Standard LSP semantic tokens
+    ["@lsp.type.class"] = { fg = p.type },
+    ["@lsp.type.interface"] = { fg = p.type },
+    ["@lsp.type.enum"] = { fg = p.keyword },
+    ["@lsp.type.enumMember"] = { fg = p.const },
   }
 
   for k, v in pairs(o.overrides or {}) do
